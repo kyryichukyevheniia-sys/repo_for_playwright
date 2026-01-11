@@ -1,0 +1,22 @@
+{
+  "name": "repo_for_playwright",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kyryichukyevheniia-sys/repo_for_playwright.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kyryichukyevheniia-sys/repo_for_playwright/issues"
+  },
+  "homepage": "https://github.com/kyryichukyevheniia-sys/repo_for_playwright#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@types/node": "^25.0.6"
+  }
+}
