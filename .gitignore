@@ -10,6 +10,8 @@ playwright-report/
 test-results/
 blob-report/
 .playwright/
+playwright/.cache/
+playwright/.auth/
 
 # Environment variables
 .env
@@ -28,9 +30,3 @@ coverage/
 
 # Logs
 *.log
-
-# Playwright
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/playwright/.auth/
