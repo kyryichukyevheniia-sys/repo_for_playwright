@@ -5,39 +5,51 @@ class RegistrationPage {
     this.page = page;
 
     this.signUpButton = page.locator('button:has-text("Sign up")');
-
     this.nameInput = page.locator("#signupName");
     this.lastNameInput = page.locator("#signupLastName");
     this.emailInput = page.locator("#signupEmail");
     this.passwordInput = page.locator("#signupPassword");
     this.repeatPasswordInput = page.locator("#signupRepeatPassword");
-
     this.registerButton = page.locator('button:has-text("Register")');
-    this.errorMessage = page.locator(".invalid-feedback");
   }
 
-  async openRegistrationModal() {
+  async open() {
+    await this.page.goto("/");
     await this.signUpButton.click();
   }
 
-  async fillForm(user) {
-    await this.nameInput.fill(user.name);
-    await this.lastNameInput.fill(user.lastName);
-    await this.emailInput.fill(user.email);
-    await this.passwordInput.fill(user.password);
-    await this.repeatPasswordInput.fill(user.password);
+  async fillField(field, value) {
+    await field.fill(value);
+    await this.page.keyboard.press("Tab");
   }
 
-  async clickRegister() {
+  async fillForm(user) {
+    await this.fillField(this.nameInput, user.name);
+    await this.fillField(this.lastNameInput, user.lastName);
+    await this.fillField(this.emailInput, user.email);
+    await this.fillField(this.passwordInput, user.password);
+    await this.fillField(this.repeatPasswordInput, user.password);
+  }
+
+  async submit() {
+    await this.page.locator("body").click();
     await this.registerButton.click();
   }
 
-  async expectError(text) {
-    await expect(this.errorMessage).toContainText(text);
+  async registerValidUser(user) {
+    await this.fillForm(user);
+    await this.submit();
   }
 
-  async expectRegisterDisabled() {
-    await expect(this.registerButton).toBeDisabled();
+  async expectError(text) {
+    await expect(
+      this.page.locator("div.invalid-feedback").filter({ hasText: text }),
+    ).toBeVisible();
+  }
+
+  async expectRegisterEnabled() {
+    await this.page.locator("body").click();
+    await expect(this.registerButton).toBeEnabled();
   }
 }
 
