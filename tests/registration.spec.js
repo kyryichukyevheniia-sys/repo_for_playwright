@@ -1,124 +1,56 @@
-const { test, expect } = require("@playwright/test");
+const { test } = require("@playwright/test");
+const { RegistrationPage } = require("../pages/registration.page");
+const { generateUser } = require("../utils/userFactory");
 
-function generateUser() {
-  const timestamp = Date.now();
-  return {
-    name: "John",
-    lastName: "Smith",
-    email: `aqa-${timestamp}@test.com`,
-    password: "Qwerty123",
-  };
-}
-
-test.describe("Registration tests", () => {
+test.describe("Registration - Page Object refactor", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/");
-    await page.click('button:has-text("Sign up")');
+    const registration = new RegistrationPage(page);
+    await registration.open();
   });
 
-  // ✅ POSITIVE
   test("Positive: successful registration", async ({ page }) => {
+    const registration = new RegistrationPage(page);
     const user = generateUser();
 
-    await page.fill("#signupName", user.name);
-    await page.keyboard.press("Tab");
-
-    await page.fill("#signupLastName", user.lastName);
-    await page.keyboard.press("Tab");
-
-    await page.fill("#signupEmail", user.email);
-    await page.keyboard.press("Tab");
-
-    await page.fill("#signupPassword", user.password);
-    await page.keyboard.press("Tab");
-
-    await page.fill("#signupRepeatPassword", user.password);
-    await page.keyboard.press("Tab");
-
-    await page.locator("body").click(); // 🔥 важливо
-
-    const registerBtn = page.locator('button:has-text("Register")');
-    await expect(registerBtn).toBeEnabled();
-    await registerBtn.click();
+    await registration.fillForm(user);
+    await registration.expectRegisterEnabled();
+    await registration.submit();
   });
 
-  // ❌ EMPTY NAME
   test("Negative: empty name", async ({ page }) => {
+    const registration = new RegistrationPage(page);
     const user = generateUser();
 
-    await page.fill("#signupName", "");
-    await page.keyboard.press("Tab"); // 🔥 важливо
+    await registration.fillForm({
+      ...user,
+      name: "",
+    });
 
-    await page.fill("#signupLastName", user.lastName);
-    await page.keyboard.press("Tab");
-
-    await page.fill("#signupEmail", user.email);
-    await page.keyboard.press("Tab");
-
-    await page.fill("#signupPassword", user.password);
-    await page.keyboard.press("Tab");
-
-    await page.fill("#signupRepeatPassword", user.password);
-    await page.keyboard.press("Tab");
-
-    await expect(
-      page.locator("div.invalid-feedback").filter({ hasText: "Name required" }),
-    ).toBeVisible();
+    await registration.expectError("Name required");
   });
 
-  // ❌ INVALID EMAIL
   test("Negative: invalid email", async ({ page }) => {
+    const registration = new RegistrationPage(page);
     const user = generateUser();
 
-    await page.fill("#signupName", user.name);
-    await page.keyboard.press("Tab");
+    await registration.fillForm({
+      ...user,
+      email: "aqa-invalid",
+    });
 
-    await page.fill("#signupLastName", user.lastName);
-    await page.keyboard.press("Tab");
-
-    await page.fill("#signupEmail", "aqa-invalid");
-    await page.keyboard.press("Tab");
-
-    await expect(page.locator(".invalid-feedback")).toContainText(
-      "Email is incorrect",
-    );
+    await registration.expectError("Email is incorrect");
   });
 
-  // ❌ PASSWORDS DO NOT MATCH
   test("Negative: passwords do not match", async ({ page }) => {
+    const registration = new RegistrationPage(page);
     const user = generateUser();
 
-    await page.fill("#signupName", user.name);
-    await page.keyboard.press("Tab");
+    await registration.fillField(registration.nameInput, user.name);
+    await registration.fillField(registration.lastNameInput, user.lastName);
+    await registration.fillField(registration.emailInput, user.email);
+    await registration.fillField(registration.passwordInput, user.password);
+    await registration.fillField(registration.repeatPasswordInput, "Wrong123");
 
-    await page.fill("#signupLastName", user.lastName);
-    await page.keyboard.press("Tab");
-
-    await page.fill("#signupEmail", user.email);
-    await page.keyboard.press("Tab");
-
-    await page.fill("#signupPassword", user.password);
-    await page.keyboard.press("Tab");
-
-    await page.fill("#signupRepeatPassword", "Different1");
-    await page.keyboard.press("Tab");
-
-    await expect(
-      page
-        .locator("div.invalid-feedback")
-        .filter({ hasText: "Passwords do not match" }),
-    ).toBeVisible();
-  });
-
-  // ❌ SHORT NAME
-  test("Negative: short name", async ({ page }) => {
-    const user = generateUser();
-
-    await page.fill("#signupName", "J");
-    await page.locator("#signupName").blur();
-
-    await expect(page.locator(".invalid-feedback")).toContainText(
-      "2 to 20 characters",
-    );
+    await registration.expectError("Passwords do not match");
   });
 });

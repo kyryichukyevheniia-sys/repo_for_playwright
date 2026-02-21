@@ -5,7 +5,7 @@ function generateUser() {
     name: "John",
     lastName: "Smith",
     email: `aqa-${timestamp}@test.com`,
-    password: "Qwerty1",
+    password: "Qwerty123",
   };
 }
 
