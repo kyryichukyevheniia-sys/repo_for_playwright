@@ -9,19 +9,36 @@ module.exports = defineConfig({
 
   use: {
     baseURL: process.env.BASE_URL,
-
     httpCredentials: {
       username: process.env.HTTP_USERNAME,
       password: process.env.HTTP_PASSWORD,
     },
-
     headless: true,
     trace: "retain-on-failure",
   },
 
   projects: [
-    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
-    { name: "firefox", use: { ...devices["Desktop Firefox"] } },
-    { name: "webkit", use: { ...devices["Desktop Safari"] } },
+    {
+      name: "setup",
+      testMatch: /setup\/.*\.setup\.js/,
+    },
+
+    {
+      name: "public",
+      testMatch: /public\/.*\.spec\.js/,
+      use: {
+        ...devices["Desktop Chrome"],
+      },
+    },
+
+    {
+      name: "auth-chromium",
+      testMatch: /auth\/.*\.spec\.js/,
+      use: {
+        ...devices["Desktop Chrome"],
+        storageState: "storageState.json",
+      },
+      dependencies: ["setup"],
+    },
   ],
 });

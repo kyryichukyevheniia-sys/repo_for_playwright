@@ -15,6 +15,7 @@ class RegistrationPage {
 
   async open() {
     await this.page.goto("/");
+    await this.page.waitForLoadState("domcontentloaded");
     await this.signUpButton.click();
   }
 

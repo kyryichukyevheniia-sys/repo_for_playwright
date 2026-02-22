@@ -1,6 +1,6 @@
 const { test } = require("@playwright/test");
-const { RegistrationPage } = require("../pages/registration.page");
-const { generateUser } = require("../utils/userFactory");
+const { RegistrationPage } = require("../../pages/registration.page");
+const { generateUser } = require("../../utils/userFactory");
 
 test.describe("Registration - Page Object refactor", () => {
   test.beforeEach(async ({ page }) => {

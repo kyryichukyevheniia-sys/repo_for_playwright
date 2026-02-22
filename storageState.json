@@ -1,0 +1,71 @@
+{
+  "cookies": [
+    {
+      "name": "YSC",
+      "value": "mj8dJ44Eopo",
+      "domain": ".youtube.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "__Secure-ROLLOUT_TOKEN",
+      "value": "CLDDpK2syKXm1AEQwszJyvrtkgMYwszJyvrtkgM%3D",
+      "domain": ".youtube.com",
+      "path": "/",
+      "expires": 1787344814.530892,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None",
+      "partitionKey": "https://forstudy.space",
+      "_crHasCrossSiteAncestor": true
+    },
+    {
+      "name": "VISITOR_INFO1_LIVE",
+      "value": "E_f-SItTvWs",
+      "domain": ".youtube.com",
+      "path": "/",
+      "expires": 1787344814.531241,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "VISITOR_PRIVACY_METADATA",
+      "value": "CgJVQRIEGgAgIQ%3D%3D",
+      "domain": ".youtube.com",
+      "path": "/",
+      "expires": 1787344814.531256,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "sid",
+      "value": "s%3AS2lp4lFHdHGCwUZSBYedPtAGSj2hxWWB.K43cjDPwWqSNFWL7tTrehZfFMthV2fSm7UYYlotIIZA",
+      "domain": ".forstudy.space",
+      "path": "/",
+      "expires": 1771879216.162766,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://www.youtube.com",
+      "localStorage": [
+        {
+          "name": "ytidb::LAST_RESULT_ENTRY_KEY",
+          "value": "{\"data\":{\"hasSucceededOnce\":true},\"expiration\":1774384814889,\"creation\":1771792814889}"
+        },
+        {
+          "name": "yt-icons-last-purged",
+          "value": "1765312814857"
+        }
+      ]
+    }
+  ]
+}
